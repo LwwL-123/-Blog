@@ -87,6 +87,21 @@ Class C = Class.forName("java.lang.String")
 
 ## 2.3 类的加载与ClassLoader的理解
 
+
+
+如果看过我写`JVM`的那篇文章的同学应该都知道一个对象的加载过程，如果没看过的同学可以再去看看，顺便在这里给大家复习一下：
+
+- 一个`.java`的文件经过`javac`命令编译成功后，得到一个`.class的文件`
+- 当我们执行了初始化操作(有可能是new、有可能是子类初始化 父类也一同被初始化、也有可能是反射…等)，会将`.class`文件通过**类加载器**装载到`jvm`中
+- 将`.class`文件加载器加载到jvm中，又分了**好几个步骤**，其中包括 **加载、连接和初始化**
+- 其中在加载的时候，会在Java堆中**创建一个java.lang.Class类的对象**，这个Class对象代表着**类相关的信息**。
+
+
+
+
+
+
+
 - 加载：将class文件字节码内容加载到内存中，==并将这些静态数据转换成方法取得运行时的数据结构==，然后生成一个代表这个类的java.lang.Class对象
 - 链接：将Java类的二进制代码合并到JVM的运行状态之中的过程。
   - 验证：确保加载的类信息符合JVM规范，没有安全方面的问题		
@@ -175,3 +190,41 @@ setName.invoke(user3,"lzw");
 ```
 
 ​		注：若原方法的声明为private，则需要在调用此invoke方法之前，显式调用方法对象的setAccessible(true)方法，则可访问private方法
+
+
+
+# 3.总结:
+
+
+
+```java
+想要使用反射，我先要得到class文件对象，其实也就是得到Class类的对象
+Class类主要API：
+        成员变量  - Field
+        成员方法  - Constructor
+        构造方法  - Method
+获取class文件对象的方式：
+        1：Object类的getClass()方法
+        2：数据类型的静态属性class
+        3：Class类中的静态方法：public static Class ForName(String className)
+--------------------------------  
+获取成员变量并使用
+        1: 获取Class对象
+        2：通过Class对象获取Constructor对象
+        3：Object obj = Constructor.newInstance()创建对象
+        4：Field field = Class.getField("指定变量名")获取单个成员变量对象
+        5：field.set(obj,"") 为obj对象的field字段赋值
+如果需要访问私有或者默认修饰的成员变量
+        1:Class.getDeclaredField()获取该成员变量对象
+        2:setAccessible() 暴力访问  
+---------------------------------          
+通过反射调用成员方法
+        1：获取Class对象
+        2：通过Class对象获取Constructor对象
+        3：Constructor.newInstance()创建对象
+        4：通过Class对象获取Method对象  ------getMethod("方法名");
+        5: Method对象调用invoke方法实现功能
+如果调用的是私有方法那么需要暴力访问
+        1: getDeclaredMethod()
+        2: setAccessiable();          
+```
