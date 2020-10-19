@@ -35,7 +35,7 @@
 
 ## 	1.3 组成
 
-![image-20200928105443332](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200928105443332.png)
+![image-20200928105443332](https://gitee.com/lzw657434763/pictures/raw/master/Blog/image-20200928105443332.png)
 
 
 
@@ -299,7 +299,7 @@ public void test2(){
 
 1.单例模式(默认)
 
-![image-20200929145832116](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200929145832116.png)
+![image-20200929145832116](https://gitee.com/lzw657434763/pictures/raw/master/Blog/image-20200929145832116.png)
 
 ```xml
     <bean id="user2" class="com.kuang.pojo.User" c:name="lll" c:age="10" scope="singleton"/>
@@ -310,7 +310,7 @@ public void test2(){
 
 2.原型模式：每次从容器中get的时候，都会产生一个新对象
 
-![image-20200929150957431](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200929150957431.png)
+![image-20200929150957431](https://gitee.com/lzw657434763/pictures/raw/master/Blog/image-20200929150957431.png)
 
 ```xml
     <bean id="user2" class="com.kuang.pojo.User" c:name="lll" c:age="10" scope="prototype"/>
@@ -540,7 +540,7 @@ public class MyTest {
 - 静态代理
 - 动态代理
 
-![image-20201010152420109](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201010152420109.png)
+![image-20201010152420109](https://gitee.com/lzw657434763/pictures/raw/master/Blog/image-20201010152420109.png)
 
 ## 10.1 静态代理
 
