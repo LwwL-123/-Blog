@@ -442,11 +442,444 @@ rest=3,4,5,6,7,8,9,10
 
 
 
+假设在JavaScript中,函数查找变量从自身函数开始,由`“内”`向`“外”`查找，假设外部存在这个同名的函数变量，则内部函数会屏蔽外部函数的变量
+
+**规范**：所有变量定义都放在函数的头部，不要乱放，便于代码维护
 
 
 
+> 全局函数
+
+全局对象window
+
+```javascript
+var x = 'xxx';
+alert(x);
+alert(window.x)//默认所有的全局变量,都会自动绑定在window对象下
+```
+
+alert()这个函数本身也是一个`window`的变量
 
 
+
+JavaScript实际上只有一个全局作用域，任何变量（函数也可视为变量），假设没有在函数作用范围内找到，就会向外查找，如果在全局作用域都没有找到，报错`ReferenceError`
+
+>规范
+
+由于我们所有的全局变量都会绑定到我们的window上,如果不同的js文件,使用了相同的全局变量,就会产生冲突
+
+那我们如何能减少冲突呢
+
+```javascript
+//唯一全局变量
+var LeeApp = {};
+
+//定义全局变量
+LeeApp.name = 'lzw';
+LeeApp.add = function(a,b){
+    return a+b;
+}
+```
+
+把自己的代码全部放入自己定义的唯一空间名字中,降低全局命名冲突的问题
+
+
+
+> 局部作用域let
+
+```javascript
+function aaa(){
+    for (var i = 0; i < ; i++) {
+        console.log(i)
+    }
+    console.log(i+1);//问题:除了这个作用域 i还是可以使用
+}
+aaa();
+1,2,3,....,99,101.
+```
+
+ES6 `let`关键字，解决局部作用于冲突问题
+
+```javascript
+function aaa(){
+    for (let i = 0; i < ; i++) {
+        console.log(i)
+    }
+    console.log(i+1);//i is not defined
+}
+aaa();
+1,2,3,....,99
+```
+
+建议都用`let`去定义局部作用域的变量
+
+> 常量const
+
+在ES6之前，怎么定义常量：只有用全部`大写字母`命名的变量，就是常量。建议不要修改这样的值
+
+在ES6引入了常量关键字`const`
+
+## 4.3 方法
+
+> 定义方法
+
+方法就是把函数放在对象里面，对象只有两个东西：属性和方法
+
+```javascript
+var Lee = {
+    name: 'lzw',
+    birth: 1998,
+    age: function(){
+        var now = new Date().getFullYear();
+        return now-this.birth;
+    }
+}
+//属性
+Lee.name
+//方法
+Lee.age();
+```
+
+
+
+> apply
+
+在js中可以控制this的指向！
+
+```javascript
+function getAge() {
+    var now = new Date().getFullYear();
+    return now-this.birth;
+}
+
+var Lee = {
+    name: 'lzw',
+    birth: 1998,
+    age: getAge
+}
+
+var xiaoming = {
+    name: '小明',
+    birth: 2019,
+    age: getAge
+}
+
+getAge.apply(Lee,[]);//this.指向了Lee，参数为空
+```
+
+
+
+# 5. 内部对象
+
+## 5.1 Date
+
+```javascript
+    var now = new Date();
+    now.getFullYear();//年
+    now.getMonth();//月
+    now.getDate();//日
+    now.getDay();//星期几
+    now.getHours();//时
+    now.getMinutes();//分
+    now.getSeconds();//秒
+    now.getTime();//时间戳 世界统一
+    console.log(new Date(1603249847736));//时间戳转时间
+```
+
+## 5.2 json
+
+> json是什么
+
+早期，所有的数据习惯使用XML文件！
+
+- JSON（JavaScript Object Notation，JS对象简谱）是一种轻量级的数据交换格式
+- 简洁和清晰的层次结构使得JSON成为理想的数据交换语言
+- 易于人阅读和编写，同时也易于机器解析和生成，并有效地提升网络传输效率
+
+在JavaScript中一切皆为对象，任何js支持的类型都可以用json来表示：
+
+- 对象都用{}
+- 数组都用[]
+- 所有的键值对都是用key：value
+
+```javascript
+    var user={
+        name:'lzw',
+        age:3,
+        gender:'male'
+    }
+    //将对象转换为json {"name":"lzw","age":3,"gender":"male"}
+    var jsonUser = JSON.stringify(user);
+
+    //将json字符串转换为对象,参数为json字符串
+    var obj = JSON.parse('{"name":"lzw","age":3,"gender":"male"}')
+```
+
+
+
+很多人不清楚，JSON和JS对象的区别
+
+```javascript
+var obj = {a:'hello',b:'hellob'}
+var json = '{"a":"hello","b":"hellob"}'
+```
+
+
+
+## 5.3 AJAX
+
+- 原生的js写法   xhr异步请求
+- jQuery封装好的方法  $(“#name”).ajax(“”)
+- axios请求
+
+# 6. 面向对象编程
+
+## 6.1 什么是面向对象
+
+JavaScript，java，c#…… 
+
+> 一般的面向对象：
+
+- 类：模板
+- 对象：具体的实例
+
+> JavaScript中的面向对象
+
+在JavaScript中需要大家换一下思路
+
+```javascript
+    var Student = {
+        name:"lzw",
+        age:3,
+        gender:"male",
+        run: function(){
+            console.log(this.name+"正在跑步");
+        }
+    };
+    var xiaoming = {
+        name:"xiaoming"
+    };
+    xiaoming.__proto__ = Student;//__proto__：原型，相当于继承
+//xiaoming.run()
+//xiaoming正在跑步
+```
+
+
+
+> class继承
+
+`class`关键字，是在ES6之后引入的
+
+1.定义一个类，属性，方法
+
+```javascript
+    // function Student(name){
+    //     this.name = name;
+    // }
+    //给Student增加一个方法
+    // Student.prototype.hello = function (){
+    //     alert('hello')
+    // };
+    //ES6之后=============
+    //定义一个学生的类
+    class Student{
+        constructor(name) {
+            this.name=name;
+        }
+        
+        hello(){
+            alert('hello');
+        }
+    }
+var xiaoming = new Student('xiaoming');
+var xiaohong = new Student('xiaohong');
+```
+
+2.继承
+
+```javascript
+var xiaoming = new Student('xiaoming');
+
+    class university extends Student{
+        constructor(name,grade) {
+            super(name);
+            this.grade=grade;
+        }
+        mygrade(){
+            console.log('我是一名大学生'+this.name);
+        }
+    }
+var xiaohong = new university('xiaohong',100);
+```
+
+![image-20201021150015402](https://gitee.com/lzw657434763/pictures/raw/master/Blog/image-20201021150015402.png)
+
+> 原型链
+
+__proto\_\_:
+
+![img](https://gitee.com/lzw657434763/pictures/raw/master/Blog/850375-20190708152327825-11086376.png)
+
+# 7. **操作BOM对象**（重点）
+
+> 浏览器介绍
+
+JavaScript和浏览器关系？
+
+JavaScript就是为了能让他在浏览器中运行
+
+BOM：浏览器对象模型
+
+
+
+> window(重要)
+
+window代表浏览器窗口
+
+```javascript
+window.innerHeight
+258
+window.innerWidth
+1093
+window.outerHeight
+728
+window.outerWidth
+1366
+```
+
+> Navigator
+
+Navigator，封装了浏览器的信息
+
+```javascript
+navigator.appName
+"Netscape"
+navigator.appVersion
+"5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36"
+navigator.userAgent
+"Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36"
+navigator.platform
+"Win32"
+```
+
+大多数时候，我们不会使用`Navigator`对象，因为会被人为修改！
+
+不建议使用这些属性来判断和编写代码
+
+> screen
+
+```java
+screen.width
+1366
+screen.height
+768
+```
+
+> location
+
+location代表当前页面的URL信息
+
+```javascript
+host: "lzw.today"
+href: "http://lzw.today/"
+protocol: "http:"
+reload: ƒ reload() //刷新网页
+```
+
+
+
+> document
+
+document代表当前的页面，HTML，DOM文档树
+
+```javascript
+<dl id="app">
+    <dt>Java</dt>
+    <dd>JavaEE</dd>
+    <dd>JavaSE</dd>
+</dl>
+
+<script>
+    var dl = document.getElementById("app");
+</script>
+```
+
+获得cookie
+
+```
+document.cookie
+"BIDUPSID=9AB28203AE5E7ECE52D8FCB7103D1A50; PSTM=1600673778; BD_UPN=12314353; BAIDUID=09BDBEBBACB4522C296ED70DB3ADC0BE:FG=1; BDORZ=FFFB88E999055A3F8A630C64834BD6D0; BDRCVFR[NPt2Vg_wYt_]=mk3SLVN4HKm; delPer=0; BD_CK_SAM=1; BD_HOME=1; PSINO=2; H_PS_PSSID=; H_PS_645EC=382cd7TLpK8%2BDIC32qItFow472lEjT0hRVIueTPBxJeBaSKRoukvh3jz6nr5N4ONSp3VKalp; BA_HECTOR=ah0k848l0k2h0ldvcn1fovpa40k; BDSVRTM=0; COOKIE_SESSION=0_0_1_0_1_3_1_0_0_1_66_0_0_0_25_0_1603265862_0_1603265837%7C1%230_0_1603265837%7C1"
+```
+
+# 8. 操作DOM对象（重点）
+
+> 核心
+
+浏览器网页就是一个Dom树形结构
+
+- 更新：更新Dom节点
+- 遍历Dom节点：得到Dom节点
+- 删除：删除一个Dom节点
+- 添加：添加一个新的节点
+
+要操作一个Dom节点，就必须先获得这个Dom节点
+
+> 获得Dom节点
+
+```javascript
+    <div id="father">
+        <h1>一级标题</h1>
+        <p id="p1">p1</p>
+        <p class="p2">p2</p>
+    </div>
+    <script>
+        var h1 = document.getElementsByTagName('h1');
+        var p1 = document.getElementById("p1");
+        var p2 = document.getElementsByClassName('p2');
+        var father = document.getElementById('father');
+    </script>
+
+father.children//获取父节点下的所有子节点
+HTMLCollection(3) [h1, p#p1, p.p2, p1: p#p1]
+//father.firstChild
+//father.firstChild                 
+```
+
+这是原生代码，后期我们都使用JQ
+
+
+
+> 更新节点
+
+`id1.innerText='123'`修改文本的值
+
+`id1.innerHTML='<strong>123<strong>'`可以解析HTML文本标签
+
+`id1.style.color='yellow'`设置颜色
+
+`id1.style.fontSize='200px'`设置字体大小
+
+`id1.style.padding='50px'`设置padding
+
+> 删除节点
+
+步骤：先获取父节点，通过父节点删除自己
+
+```javascript
+var ss = document.getElementById('s_wrap')    //获取节点
+var father = ss.parentElement				//获取父节点
+father.removeChild(ss)					    //通过父节点，删除节点
+```
+
+
+
+> 插入节点
+
+我们获得了某个Dom节点，假设这个dom节点是空的，我们通过innerHTML可以增加一个元素，但是这个DOM节点已经存在元素，我们就不能这么使用，因为会产生覆盖
+
+
+
+> 创建节点
 
 
 
