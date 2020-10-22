@@ -792,7 +792,7 @@ reload: ƒ reload() //刷新网页
 
 document代表当前的页面，HTML，DOM文档树
 
-```javascript
+```html
 <dl id="app">
     <dt>Java</dt>
     <dd>JavaEE</dd>
@@ -826,7 +826,7 @@ document.cookie
 
 > 获得Dom节点
 
-```javascript
+```html
     <div id="father">
         <h1>一级标题</h1>
         <p id="p1">p1</p>
@@ -881,17 +881,223 @@ father.removeChild(ss)					    //通过父节点，删除节点
 
 > 创建节点
 
+```html
+<div id="list">
+    <p id="se">javaSE</p>
+    <p id="ee">javaEE</p>
+    <p id="me">javaME</p>
+</div>
+
+<script>
+    var js = document.getElementById('js')
+    var list = document.getElementById('list')
+    //创建一个新的标签
+    var newP = document.createElement('js');
+    newP.id = 'newP';
+    newP.innerText='lzw';
+	//插入标签
+    list.appendChild(newP);
+</script>
+```
 
 
 
+# 9. 操作表单（验证）
+
+> 表单是什么
+
+- 文本框 text
+- 下拉框 <select\>
+- 复选框 chenckbox
+- 单选框 radio
+- 隐藏域 hidden
+- 密码框 password
+- ………
+
+表单的目的：提交信息
 
 
 
+> 获得要提交的信息
+
+```html
+<form action="post">
+    <p>
+        <span>用户名：</span><input type="text" id="username">
+    </p>
+    <!--单选框和多选框的值，就是定义好的value-->
+    <p>
+        <span>性别：</span>
+        <input type="radio" name="gender" value="male" id="male">男
+        <input type="radio" name="gender" value="female" id="female">女
+    </p>
+
+</form>
+
+<script>
+    var input_text = document.getElementById('username');
+    var male_radio = document.getElementById('male');
+    var female_radio = document.getElementById('username');
+    //得到输入框的值
+    input_text.value;
+    //修改输入框的值
+    input_text.value = '123123'
+    //对于单选框，多选框等固定的值，male_radio。value只能接收到当前的值
+    male_radio.checked;
+    female_radio.checked=true;//赋值
+</script>
+```
 
 
 
+> 提交表单
+
+```html
+<form action="1.获得dom节点.html" method="post">
+    <p>
+        <span>用户名</span><input type="text" id="username" name="username">
+    </p>
+    <p>
+        <span>密码</span><input type="password" id="password" name="password">
+    </p>
+
+    <button type="button" onclick="check()">提交</button>
+</form>
+<script>
+    function check(){
+        var uname = document.getElementById('username');
+        var pwd = document.getElementById('password');
+        console.log(uname.value);
+        console.log(pwd.value);
+        //MD5算法
+        pwd.value=md5(pwd);
+        console.log(pwd.value)
+    }
+</script>
+```
 
 
 
+# 10. jQuery
 
+[点击查看jQuery官方文档]: https://jquery.cuishifeng.cn/
+
+JavaScript
+
+jQuery库，里面存放了大量的JavaScript函数
+
+> 获取jQuery
+
+cdn导入
+
+```html
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+```
+
+ 
+
+> 选择器
+
+公式：$('seletor').action()
+
+```html
+<!--
+公式：$('seletor').action()
+-->
+<a href="" id="test-jquery">点我</a>
+<script>
+    //选择器
+    $('#test-jquery').click(function (){
+        alert('hello')
+    })
+</script>
+```
+
+```html
+//原生js，选择器少，麻烦，不好标记
+//标签
+document.getElementsByTagName();
+//id
+document.getElementById();
+//类
+document.getElementsByClassName();
+
+//jQuery
+$('p').click();//标签选择器
+$('#id1').click();//id选择器
+$('.class1').click();//类选择器
+```
+
+
+
+> 事件
+
+鼠标事件，键盘事件
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src=lib/jquery-3.5.1.js></script>
+    <style>
+        #divMove{
+            width: 500px;
+            height: 500px;
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+<!--获取鼠标的坐标-->
+mouse:<span id="mouseMove"></span>
+<div id="divMove">在这里移动鼠标试试</div>
+
+<script>
+    //当网页元素加载完成以后，响应事件
+    $(function (){
+        $('#divMove').mousemove(function (e){
+            $('#mouseMove').text('x:'+e.pageX+'y:'+e.pageY)
+        })
+    })
+</script>
+
+</body>
+</html>
+```
+
+
+
+> 操作dom
+
+节点文本操作
+
+```html
+<ul id="test-ul">
+    <li class="js">JavaScript</li>
+    <li name="py">Python</li>
+</ul>
+
+<script>
+    $('#test-ul li[name=py]').text();//获得值
+    $('#test-ul li[name=py]').text('设置值');//设置值
+    $('#test-ul').html();//获得值
+    $('#test-ul').html('<strong>123</strong>');//获得值
+   
+</script>
+```
+
+样式
+
+```html
+$('#test-ul li[name=py]').css("color","red");
+```
+
+元素的显示和隐藏：本质`display:none`
+
+```
+$('#test-ul li[name=py]').hide();
+$('#test-ul li[name=py]').show();
+```
 
