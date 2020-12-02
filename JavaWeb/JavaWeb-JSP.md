@@ -4,7 +4,7 @@ Java Server Pages：Java服务器端页面，也和Servlet一样，用于动态w
 
 最大的特点：
 
-- 些JSP就像在写HTML
+- 写JSP就像在写HTML
 - 区别：
   - HTML只给用户提供静态的数据
   - JSP页面中可以嵌入JAVA代码 ，为用户提供动态数据
@@ -51,6 +51,8 @@ response)
 
 以后访问1.jsp就不再重新编译jsp文件了，直接调用class文件来响应浏览器。当然了，**如果Tomcat检测到JSP页面改动了的话，会重新编译的**。
 
+![image-20201201132539104](https://gitee.com/lzw657434763/pictures/raw/master/Blog/image-20201201132539104.png)
+
 既然JSP是一个Servlet，**那JSP页面中的HTML排版标签是怎么样被发送到浏览器的**？我们来看下上面1_jsp.java的源码就知道了。原来就是用write()出去的罢了。**说到底，JSP就是封装了Servlet的java程序罢了。**
 
 ```java
@@ -70,7 +72,7 @@ String s = "HelloWorda";
 out.println(s);
 ```
 
-**JSP内置了9个对象！**内置对象有：out、session、response、request、config、page、application、pageContext、exception。
+**JSP内置了9个对象！**内置对象有：`out`、`session`、`response`、`request`、`config`、`page`、`application`、`pageContext`、`exception`。
 
 重要要记住的是：**JSP的本质其实就是Servlet**。只是JSP当初设计的目的是为了简化Servlet输出HTML代码。
 
@@ -96,9 +98,54 @@ if(formBean.validate()==false){
 }
 ```
 
-JSP拿到Servlet处理好的数据，做显示使用：
+JSP拿到Servlet处理好的数据，做显示使用
 
 
+
+
+
+# 2.JSP基本语法
+
+> jsp表达式
+
+```jsp
+<%--
+  JSP表达式
+  作用：用来将程序的输出，输出到客户端
+  <%= 变量或者表达式 %>
+--%>
+<%= new java.util.Date() %>
+```
+
+
+
+> jsp脚本片段
+
+```jsp
+<%--jsp脚本片段--%>
+<%
+  int sum = 0;
+  for (int i = 0; i < 100; i++) {
+    sum+=i;
+  }
+  out.println("<h1>Sum = "+sum+"</h1>");
+%>
+```
+
+
+
+> 脚本片段的在实现
+
+```jsp
+  <%--在代码中嵌入html元素--%>
+  <%
+    for (int i = 0; i < 5; i++) {
+  %>
+    <h4>hello <%=i%> </h4>
+  <%
+    }
+  %>
+```
 
 ## JSP需要学什么
 
@@ -146,7 +193,7 @@ JSP我们要学的其实两块就够了：**JSTL和EL表达式**
 </html>
 ```
 
-![img](https://mmbiz.qpic.cn/sz_mmbiz_png/2BGWl1qPxib2liaHskXvs8jia8oGNc9p4Hzic6h3O3A21n8oCX8sDhnTGkiab6EZUo6RJBHEibbt2I8sMfvZncVELo9A/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+<img src="https://mmbiz.qpic.cn/sz_mmbiz_png/2BGWl1qPxib2liaHskXvs8jia8oGNc9p4Hzic6h3O3A21n8oCX8sDhnTGkiab6EZUo6RJBHEibbt2I8sMfvZncVELo9A/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="img"  />
 
 
 

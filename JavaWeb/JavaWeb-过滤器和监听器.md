@@ -9,6 +9,10 @@
 
 
 
+我们很容易发现，**过滤器可以比喻成一张滤网**。我们想想现实中的滤网可以做什么：**在泡茶的时候，过滤掉茶叶**。那滤网是怎么过滤茶叶的呢？**规定大小的网孔**，只要网孔比茶叶小，就可以实现过滤了！
+
+
+
 Filter开发步骤：
 
 1. 导包
@@ -59,6 +63,8 @@ public class CharacterEncodingFilter implements javax.servlet.Filter {
 ```
 
 # 2. 监听器
+
+监听器就是一个**实现特定接口的普通Java程序**，这个程序专门用于**监听一个Java对象的方法调用或属性改变**，当被监听对象发生上述事件后，监听器某个方法将立即被执行。
 
 实现一个监听器的接口；（有N种）
 1. 编写一个监听器
@@ -144,7 +150,42 @@ public class TestPanel {
 
 
 
-> 用户登录之后才能进入主页
+# 4.面试题
+
+## 监听器有哪些作用和用法？
+
+Java Web开发中的监听器（listener）就是application、session、request三个对象创建、销毁或者往其中添加修改删除属性时自动执行代码的功能组件，如下所示：
+
+- ①ServletContextListener：对Servlet上下文的创建和销毁进行监听。
+
+- ②ServletContextAttributeListener：监听Servlet上下文属性的添加、删除和替换。
+
+- ③HttpSessionListener：对Session的创建和销毁进行监听。
+
+- session超时（可以在web.xml中通过
+
+- <session- config>/<session-timeout>标签配置超时时间）；
+
+- - 通过调用session对象的invalidate()方 法使session失效。
+  - 补 充：session的销毁有两种情况：
+
+- ④HttpSessionAttributeListener：对Session对象中属性的添加、删除和替换进行监听。
+
+- ⑤ServletRequestListener：对请求对象的初始化和销毁进行监听。
+
+- ⑥ServletRequestAttributeListener：对请求对象属性的添加、删除和替换进行监听。
+
+常见的监听器用途主要包括：**网站在线人数技术、监听用户的行为(管理员踢人)**。
+
+
+
+## 过滤器有哪些作用和用法？
+
+Java Web开发中的过滤器（filter）是从Servlet 2.3规范开始增加的功能，并在Servlet 2.4规范中得到增强。对Web应用来说，**过滤器是一个驻留在服务器端的Web组件**，它可以截取客户端和服务器之间的请求与响应信息，并对这些信息进行过 滤。当Web容器接受到一个对资源的请求时，它将判断是否有过滤器与这个资源相关联。如果有，那么容器将把请求交给过滤器进行处理。在过滤器中，**你可以改 变请求的内容，或者重新设置请求的报头信息，然后再将请求发送给目标资源。当目标资源对请求作出响应时候，容器同样会将响应先转发给过滤器，再过滤器中， 你可以对响应的内容进行转换，然后再将响应发送到客户端。**
+
+常见的过滤器用途主要包括：**对用户请求进行统一认证、对用户的访问请求进行记录和审核、对用户发送的数据进行过滤或替换、转换图象格式、对响应内容进行压缩以减少传输量、对请求或响应进行加解密处理、触发资源访问事件、对XML的输出应用XSLT等**。
+
+和过滤器相关的接口主要有：Filter、FilterConfig、FilterChain
 
 
 
